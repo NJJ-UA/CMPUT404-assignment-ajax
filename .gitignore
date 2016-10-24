@@ -36,3 +36,8 @@ nosetests.xml
 .pydevproject
 *~
 *.swp
+
+
+
+
+venv
