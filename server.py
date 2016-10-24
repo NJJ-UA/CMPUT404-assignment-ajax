@@ -28,10 +28,10 @@ app = Flask(__name__)
 app.debug = True
 
 # An example world
-{
-    'a':{'x':1, 'y':2},
-    'b':{'x':2, 'y':3}
-}
+#{
+#    'a':{'x':1, 'y':2},
+#    'b':{'x':2, 'y':3}
+#}
 
 class World:
     def __init__(self):
@@ -58,10 +58,11 @@ class World:
 # curl -v   -H "Content-Type: appication/json" -X PUT http://127.0.0.1:5000/entity/X -d '{"x":1,"y":1}' 
 
 myWorld = World()          
-myWorld.space={
-    'a':{'x':1, 'y':2},
-    'b':{'x':2, 'y':3}
-}
+#myWorld.space={
+#    'a':{'x':1, 'y':2},
+#    'b':{'x':2, 'y':3}
+#}
+
 # I give this to you, this is how you get the raw body/data portion of a post in flask
 # this should come with flask but whatever, it's not my project.
 def flask_post_json():
