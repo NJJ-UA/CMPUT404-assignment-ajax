@@ -22,16 +22,16 @@
 
 
 import flask
-from flask import Flask, request
+from flask import Flask, request,render_template
 import json
 app = Flask(__name__)
 app.debug = True
 
 # An example world
-# {
-#    'a':{'x':1, 'y':2},
-#    'b':{'x':2, 'y':3}
-# }
+{
+    'a':{'x':1, 'y':2},
+    'b':{'x':2, 'y':3}
+}
 
 class World:
     def __init__(self):
@@ -58,7 +58,10 @@ class World:
 # curl -v   -H "Content-Type: appication/json" -X PUT http://127.0.0.1:5000/entity/X -d '{"x":1,"y":1}' 
 
 myWorld = World()          
-
+myWorld.space={
+    'a':{'x':1, 'y':2},
+    'b':{'x':2, 'y':3}
+}
 # I give this to you, this is how you get the raw body/data portion of a post in flask
 # this should come with flask but whatever, it's not my project.
 def flask_post_json():
@@ -74,27 +77,31 @@ def flask_post_json():
 @app.route("/")
 def hello():
     '''Return something coherent here.. perhaps redirect to /static/index.html '''
-    return None
+    return app.send_static_file('index.html')
 
 @app.route("/entity/<entity>", methods=['POST','PUT'])
 def update(entity):
     '''update the entities via this interface'''
-    return None
+    json_data=flask_post_json()
+    for key, value in json_data.iteritems():
+        myWorld.update(entity,key,value)
+    return flask.jsonify(myWorld.get(entity))
 
 @app.route("/world", methods=['POST','GET'])    
 def world():
     '''you should probably return the world here'''
-    return None
+    return flask.jsonify(myWorld.world())
 
 @app.route("/entity/<entity>")    
 def get_entity(entity):
     '''This is the GET version of the entity interface, return a representation of the entity'''
-    return None
+    return flask.jsonify(myWorld.get(entity))
 
 @app.route("/clear", methods=['POST','GET'])
 def clear():
     '''Clear the world out!'''
-    return None
+    myWorld.clear()
+    return flask.jsonify(myWorld.world())
 
 if __name__ == "__main__":
     app.run()
